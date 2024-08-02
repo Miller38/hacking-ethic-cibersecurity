@@ -1,0 +1,129 @@
+usuario y contraseña para ingresar 
+kali
+kali
+
+-primero que todo actualizamos los repositorios de kali linux
+
+sudo apt update && sudo apt upgrade -y
+
+-recomendacion ser usuario root
+sudo su
+
+-contraseña: kali
+-limpiar consola
+clear
+
+-installar paquetes
+sudo apt install (nombre paquete)
+
+-paquete para ver las especificaciones del equipo
+neofetch
+
+ejemplo: sudo apt install neofecth
+-cuandose instala se ejecuta:
+neofecth
+
+-desinstalar paquetes
+sudo apt remove neofetch
+
+-remover todas las dependencias residuales cuando eliminamos una aplicacion
+sudo apt autoremove
+
+-listar elementos de un directorio
+ls
+
+-mostrar la ruta donde estamos:
+pwd
+
+-devolvernos de una carpeta:
+cd..
+
+-eliminar un archivo:
+rm nombre_archivo
+
+-crear un archivo:
+ejemplo:
+touch prueba.txt
+
+-modificar un archivo:
+ejemplo:
+nano prueba.txt
+
+-muestra el contenido de un archivo:
+cat prueba.txt
+
+-podemos guardar dentro del archivo directamente:
+echo 'esto es una prueba' > prueba.txt
+
+-crear una carpeta:
+mkdir nombre_carpeta
+
+-borrar un directorio o carpeta:
+rm -r experimento 
+
+-para saber la ip 
+ipconfig
+
+-escanner equipos en mi red   
+ejemplo:
+nmap -O 192.168.1.0/24
+nota: cuando se coloca el puerto se omite el ultimo digito
+y se agrega .0/24
+
+nmap: Es el comando para ejecutar Nmap, una herramienta de escaneo de red utilizada para descubrir hosts y servicios en una red informática.
+
+-O: Habilita la detección de sistema operativo (OS detection). Nmap intenta determinar el sistema operativo de cada host en la red objetivo, utilizando una serie de técnicas de huella digital para identificar la pila TCP/IP del sistema.
+
+192.168.1.0/24: Especifica el rango de direcciones IP que se deben escanear. En este caso, 192.168.1.0/24 abarca todas las direcciones IP desde 192.168.1.0 hasta 192.168.1.255, lo que incluye todos los hosts en la subred 192.168.1.x.
+
+En resumen:
+El comando completo nmap -O 192.168.1.0/24 realiza las siguientes acciones:
+
+Escanea la subred: 192.168.1.0/24, que incluye todas las direcciones IP desde 192.168.1.0 hasta 192.168.1.255.
+Detecta el sistema operativo: Intenta identificar el sistema operativo de cada host activo en esa subred utilizando técnicas de huella digital de la pila TCP/IP.
+Uso práctico:
+Este tipo de escaneo es útil para:
+
+Auditorías de seguridad: Ayuda a identificar sistemas operativos en la red, lo que es crucial para la gestión de vulnerabilidades.
+Inventario de red: Facilita la creación de un inventario de los dispositivos y sus sistemas operativos en una red.
+Reconocimiento: En pruebas de penetración, permite conocer más detalles sobre los sistemas de la red objetivo.
+Consideraciones:
+Permisos: Realizar escaneos de red sin autorización puede ser ilegal y está prohibido por políticas de uso aceptable de muchas redes.
+Impacto: Un escaneo detallado como este puede generar tráfico adicional en la red y potencialmente afectar el rendimiento de la misma.
+
+
+
+-cuando ya tenemos una ip definida necesitamos conocer mas informacion de la maquina victima
+nmap -p- -sVC -sC --open -sS -vvv -n -Pn  10.0.2.2 -oN escaneo
+
+nmap: Es el comando para ejecutar Nmap, una herramienta de escaneo de red utilizada para descubrir hosts y servicios en una red informática.
+
+-p-: Indica que se deben escanear todos los puertos (0-65535) en el host objetivo.
+
+-sV: Realiza detección de versiones. Trata de determinar el software y la versión de los servicios que se están ejecutando en los puertos abiertos.
+
+-sC: Utiliza scripts de Nmap Scripting Engine (NSE) con el conjunto de scripts predeterminados. Estos scripts realizan diversas tareas adicionales, como la detección de vulnerabilidades y la obtención de información adicional.
+
+--open: Muestra solo los puertos que están abiertos. No se mostrarán los puertos cerrados o filtrados.
+
+-sS: Realiza un escaneo SYN (o escaneo semiabierto). Este tipo de escaneo es más sigiloso y rápido porque no establece una conexión completa con el host objetivo.
+
+-vvv: Aumenta la verbosidad. Proporciona mucha más información sobre el progreso del escaneo y los resultados intermedios.
+
+-n: No resuelve nombres de host. Solo usa direcciones IP en los resultados, lo que puede acelerar el escaneo.
+
+-Pn: Desactiva la detección de host. Supone que el host está activo, evitando la fase de ping.
+
+10.0.2.2: Es la dirección IP del objetivo a escanear.
+
+-oN escaneo: Guarda los resultados del escaneo en un archivo llamado escaneo en formato de salida normal de Nmap.
+
+En resumen:
+Este comando de Nmap realiza un escaneo muy detallado de todos los puertos (0-65535) en el host 10.0.2.2. Utiliza un escaneo SYN para detectar servicios y versiones de software en esos puertos abiertos. Además, ejecuta scripts NSE predeterminados para recopilar información adicional y vulnerabilidades potenciales. El escaneo es muy verboso (-vvv) y los resultados se guardan en un archivo llamado escaneo.
+
+
+
+
+
+
+

